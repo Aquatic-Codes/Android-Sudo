@@ -9,10 +9,15 @@ similar to linux sudo.
 
 ````
 Installation Tutorial:
+
 Go to releases and download latest source code (.zip)
+
 Extract it to desired location.
+
 Open the extracted location in a terminal
+
 run: su -c sh installSudo.sh
+
 The script will take care of installation.
 To view what was done during install, read insatll.log
 ````
