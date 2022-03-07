@@ -1,7 +1,6 @@
 /*
 
 SuperUser-Do Binary for Android
-Built-In C
 
 Run command as root, Pending Features
 To suggest features, comment in my post on reddit, u/AquaticGamerzYT
@@ -21,24 +20,19 @@ Development: Pending/Under Development
 #include <unistd.h>
 #include <sys/wait.h>
 
-// Sudo Info
 #define SUDO_DEBUG_BUILD "0"
 #define SUDO_LOGS_BUILD "0"
 #define SUDO_LOGS_FILE "NULL"
 #define SUDO_VER "1.0.0"
 
-// Android path
 #define path "PATH=/bin:/system/bin/:/system/xbin/:/system/sbin/:/sbin/:/magisk/.core/bin/"
 
-// Android Environmental Variables
-char env[10000] = "FILESYSTEMS_INFO=/proc/filesystems"; // Will be updated in run time.
+char env[10000] = "FILESYSTEMS_INFO=/proc/filesystems";
 
-// Su executeable location, will be update in run time
 char su_executeable[25];
 
 bool isRooted();
 
-//usage instructions
 void usage() {
     printf("Android - sudo : 1.0.0\n\n\
 \
@@ -61,43 +55,40 @@ void sudo(int environment, int user, char user_id[], char *command[]);
 
 void confirmArgs(int argc, char *argv[]);
 
-// Main function that calls the subfunctions
 int main(int argc, char *argv[]) {
     if (isRooted()) {
         
         if (argc == 1) usage();
         
-        // If everything is proper, call function to collect arguments.
         confirmArgs(argc, argv);
         
-    } else { // If device isn't not rooted
+    } else {
         printf("SuperUser Not Found.\nIs this device Rooted?\n"); 
         exit(1);
     }
+    
     return 0;
 }
 
-// Loop through possible su executeable paths and check if device is rooted
 bool isRooted() {
     
     const char *executeables[] = {"/bin/su", "/system/bin/su", "/system/xbin/su", "/system/sbin/su", "/sbin/su", "/su/bin/su", "/magisk/.core/bin/su"};
-    // All possible SU executeables. Will be updated over-time
     
     for (int i = 0; i < 7; i++) {//Start the loop
         if (access(executeables[i], F_OK) == 0) {
-            sprintf(su_executeable, "%s", executeables[i]);// If found, update the superuser executeable
-            return true; // Confirm the device is rooted and end function + loop
+            sprintf(su_executeable, "%s", executeables[i]);
+            return true;
         }
     }
     
-    return false; // Confirm the device isn't rooted and end function
+    return false;
 }
 
-// Modifying env's and add them to env global Variable.
 void setEnv() {
     
     char *envs[18] = { "EUID=0", "HOME=/" , "ANDDOID_DATA=/data/", "APP_DATA=/data/data/", "LOGNAME=root", "USER=root", "LANG=en_US.UTF-8", "TMPDIR=/data/local/tmp/", "SHELL=/system/bin/sh", "ANDROID_ROOT=/system/", "ANDROID_DEVICE_VENDOR=/vendor/", "ANDROID_TZDATA_ROOT=/apex/com.android.tzdata", "MOUNTS_FILE=/proc/mounts", "PARTITIONS_ROOT=/dev/block/by-name/", "ANDROID_ART_ROOT=/apex/com.android.art", "DEX2OATBOOTCLASSPATH=/apex/com.android.art/javalib/core-oj.jar:/apex/com.android.art/javalib/core-libart.jar:/apex/com.android.art/javalib/okhttp.jar:/apex/com.android.art/javalib/bouncycastle.jar:/apex/com.android.art/javalib/apache-xml.jar:/system/framework/framework.jar:/system/framework/framework-graphics.jar:/system/framework/ext.jar:/system/framework/telephony-common.jar:/system/framework/voip-common.jar:/system/framework/ims-common.jar:/apex/com.android.i18n/javalib/core-icu4j.jar:/system/framework/telephony-ext.jar", "BOOTCLASSPATH=/apex/com.android.art/javalib/core-oj.jar:/apex/com.android.art/javalib/core-libart.jar:/apex/com.android.art/javalib/okhttp.jar:/apex/com.android.art/javalib/bouncycastle.jar:/apex/com.android.art/javalib/apache-xml.jar:/system/framework/framework.jar:/system/framework/framework-graphics.jar:/system/framework/ext.jar:/system/framework/telephony-common.jar:/system/framework/voip-common.jar:/system/framework/ims-common.jar:/apex/com.android.i18n/javalib/core-icu4j.jar:/system/framework/telephony-ext.jar:/apex/com.android.appsearch/javalib/framework-appsearch.jar:/apex/com.android.conscrypt/javalib/conscrypt.jar:/apex/com.android.ipsec/javalib/android.net.ipsec.ike.jar:/apex/com.android.media/javalib/updatable-media.jar:/apex/com.android.mediaprovider/javalib/framework-mediaprovider.jar:/apex/com.android.os.statsd/javalib/framework-statsd.jar:/apex/com.android.permission/javalib/framework-permission.jar:/apex/com.android.permission/javalib/framework-permission-s.jar:/apex/com.android.scheduling/javalib/framework-scheduling.jar:/apex/com.android.sdkext/javalib/framework-sdkextensions.jar:/apex/com.android.tethering/javalib/framework-connectivity.jar:/apex/com.android.tethering/javalib/framework-tethering.jar:/apex/com.android.wifi/javalib/framework-wifi.jar" };
     
+    // Setting environmental variables
     for (int i = 0; i < 17; i++) {
         if (i == 18) break;
         sprintf(env, "%s %s", env, envs[i]);
@@ -105,13 +96,13 @@ void setEnv() {
     
 }
 
-// Looping the arguments and adding them to another arrays
 void confirmArgs(int argc, char *argv[]) {
     int environment = 0;
     int user = 0;
     char command_pos = 0;
     
-    // To ignore user and command and treat them as seperate arguments. To also know which user to switch if user is true.
+    // To ignore user and command and treat them as seperate arguments. 
+    //To also know which user to switch if user is true.
     int user_pos = 0;
     char user_id[45];
     
@@ -155,13 +146,12 @@ void confirmArgs(int argc, char *argv[]) {
     // Refer to sudo function's loop.
     command[cmd_count] = "DUDSendtheloopsofscans";
     
-    // set environment Variables and call sudo.
     setEnv();
     sudo(environment,user, user_id, command);
     
 }
 
-// Actual Main Function: Sudo, Only executed when everything is safe and proper data is recived. Will be documented soon.
+// Executed when everything is safe and proper data is recived. Will be documented soon.
 
 void sudo(int environment, int user, char user_id[], char *command[]) {
     
