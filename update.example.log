@@ -1,0 +1,23 @@
+[ - ] Gathering Device Information..
+[ * ] Device Name: ginkgo
+[ * ] Android Version: 12
+[ * ] Model: Redmi Note 8
+[ * ] Manufacturer: Xiaomi
+[ * ] Chipset: Qualcomm
+[ * ] Device Data: Linux localhost 4.14.245-QuicksilveR-ginkgo-v2.5/e99b826f #1 SMP PREEMPT Thu Nov 25 01:17:37 PST 2021 aarch64
+[ * ] Device's Current Path: /sbin:/sbin/su:/su/bin:/su/xbin:/system/bin:/system/xbin
+[ * ] Power Adapters: Adapter 0: off-line
+Adapter 1: on-line
+
+[ - ] Device Information Gathered
+[ ! ] Checking if some folder already exits
+[ ! ] Data Folder Found, Installing Sudo (Updating)
+[ ! ] Mounted rootfs Read-Write
+mount: '/system' not in /proc/mounts
+[ ! ] Mounted System Read-Write ( Will be mounted by root-fs, don't mind above entry if its a error)
+[ ! ] Binary File Placed to /system/bin/
+[ ! ] Set permissions to 777 mode
+
+
+
+[ * ] Installation Successful
