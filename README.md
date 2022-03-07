@@ -10,16 +10,15 @@ similar to linux sudo.
 ````
 Installation Tutorial:
 
-Go to releases and download latest source code (.zip)
+Download the latest Aqral-Sudo.zip from releases.
+Extract it to any folder and open the folder in a terminal
 
-Extract it to desired location.
+Run: su -c sh installSudo.sh
 
-Open the extracted location in a terminal
+Leave the rest to the script.
+You can view install.log to know what happened.
 
-run: su -c sh installSudo.sh
-
-The script will take care of installation.
-To view what was done during install, read insatll.log
+[ Note: install.example.log and update.example.log are example logs, only install.log is your log ]
 ````
 
 Thanks for using Sudo for android!
