@@ -1,49 +1,128 @@
-if [ $(id -u) -ne 0 ]; then
-   echo "This script must be run as root" 
-   exit 1
+if [ "$(id -u)" != 0 ]; then
+echo "Run the install script as root."
+echo "su -c installSudo.sh"
+echo "If using recovery, Android 12 Users run recovery-script-12.sh\nAndroid 11 and below users recovery-script.sh"
+exit 1
 fi
 
-if [ -f $PWD/install.log ]; then
+if [ -e "$PWD/install.log" ]; then
 rm $PWD/install.log
 touch $PWD/install.log
-chmod 777 $PWD/install.log
+else
+touch $PWD/install.log
 fi
 
-chmod 777 $PWD/sudo 
+LOGFILE="$PWD/install.log"
 
-echo "Thanks A Lot For Trying Out Sudo By Aquatic"
-echo "Feel free to inform bugs at discord: Aquatic Aqral#4534\n\n"
-echo "Installing Sudo Binary...\n"
+chmod 666 $PWD/install.log
 
-echo "[ - ] Mounting partitions with required permissions..\n" 
-echo "[ - ] Mounting partitions with required permissions..\n"  >> $PWD/install.log
+deviceInfo() {
+    
+    echo "[ - ] Gathering Device Information.." >> $LOGFILE
+    echo "[ * ] Device Name: $(getprop ro.product.device)" >> $LOGFILE
+    echo "[ * ] Android Version: $(getprop ro.build.version.release)" >> $LOGFILE
+    echo "[ * ] Model: $(getprop ro.product.model)" >> $LOGFILE
+    echo "[ * ] Manufacturer: $(getprop ro.product.manufacturer)" >> $LOGFILE
+    echo "[ * ] Chipset: $(getprop ro.soc.manufacturer)" >> $LOGFILE
+    echo "[ * ] Device Data: $(/system/bin/uname -a)" >> $LOGFILE
+    echo "[ * ] Device's Current Path: $PATH" >> $LOGFILE
+    echo "[ * ] Power Adapters: $(/system/bin/acpi -a)\n" >> $LOGFILE
+    echo "[ - ] Device Information Gathered" >> $LOGFILE
+    
+}
 
-mount -o remount,rw /
+deviceInfo
+clear
+echo "Welcome and thanks for using our sudo binary."
+echo "This binary is still under development."
+
+echo "Checking architecture.."
+if [ "$(uname -m)" != "aarch64" ];then
+echo "[ ! ] Architecture Unsupported!">>$LOGFILE
+echo "[ ! ] Architecture detected $(uname -m), Supported Architecture is only aarch64" >> $LOGFILE
+echo "Unsupported Arch, Try to build/compile the source in your device.\nRaise a github issue for assistance!"
+exit 1
+fi
+
+echo "Making settings folder.."
+echo "[ ! ] Checking if some folder already exits" >> $LOGFILE
+
+if [ -d /data/data/aquatic.sudo/ ]; then
+
+echo "Data folder already found, Updating Sudo-Only.." 
+echo "[ ! ] Data Folder Found, Installing Sudo (Updating)" >> $LOGFILE
+
+else
+if [ "$(cat /etc/mkshrc | grep 'aquatic.sudo.dir')" != "" ]; then
+
+echo "Data folder already found, Updating Sudo-Only.."
+echo "[ ! ] Data Folder Found, Installing Sudo (Updating)" >> $LOGFILE
+
+else
+
+mkdir /data/data/aquatic.sudo/ 2>> $LOGFILE
+if [ $? != 0 ];
+then
+echo "Error Creating Data Folder"
+echo "[ ! ] Creating Directory /data/data/aquatic.sudo (Failed)" >> $LOGFILE
+exit 1
+fi
+
+echo "[ ! ] Created directory /data/data/aquatic.sudo" >> $LOGFILE
+
+chcon "u:object_r:app_data_file:s0" /data/data/aquatic.sudo 2>> $LOGFILE
 if [ $? != 0 ]; then
-exit 1;
+echo "Writing SeLinux context failed."
+echo "[ ! ] Writing SeLinux To /data/data/aquatic.sudo (failed)" >> $LOGFILE
+exit 1
 fi
-echo "[ ! ] Remounted RootFS(/) To make /system RW\n" >> $PWD/install.log
 
-echo "[ - ] Copying required files..."
+echo "[ ! ] Modified SeLinux Context Of /data/data/aquatic.sudo (Allowed all users to rwx)" >> $LOGFILE
 
-cp $PWD/sudo /system/bin/
+chmod 777 /data/data/aquatic.sudo 2>> $LOGFILE
 if [ $? != 0 ]; then
-exit 1;
+echo "Setting permission to data folder failed."
+echo "[ ! ] Failed to set permission 777 to /data/data/aquatic.sudo" >> $LOGFILE
+exit 1
 fi
-echo "[ ! ] Copied sudo binary to /system/bin/" >> $PWD/install.log
 
-echo "[ * ] Setting permissions.."
+echo "[ ! ] Set 777 permissions to /data/data/aquatic.sudo" >> $LOGFILE
+fi
+fi
 
-chmod 777 /system/bin/sudo
+echo "Installing Sudo.."
+echo "Mounting Partitions.."
+mount -o remount,rw / 2>> $LOGFILE
+if [ $? != 0 ];then
+echo "Mounting Failed!"
+exit 1
+fi
+echo "[ ! ] Mounted rootfs Read-Write" >> $LOGFILE
+mount -o remount,rw /system 2>> $LOGFILE
+echo "[ ! ] Mounted System Read-Write ( Will be mounted by root-fs, don't mind above entry if its a error)" >> $LOGFILE
+echo "Copying Binary.."
+
+if [ ! -f $PWD/sudo ]; then
+echo "[ ! ] Sudo Binary Not Found Expected at $PWD/sudo" >> $LOGFILE
+echo "Binary-File not found"
+exit 1
+fi
+
+cp $PWD/sudo /system/bin/ 2>> $LOGFILE
 if [ $? != 0 ]; then
-exit 1;
+echo "[ ! ] Copying Binary to /system/bin (failed)" >> $LOGFILE
+echo "Copying failed"
+exit 1
 fi
-echo "[ * ] Set 777 permission to sudo binary.">> $PWD/install.log
 
-echo "[ ! ] Installation Successful!" >> $PWD/install.log
+echo "Copied Binary file"
+echo "[ ! ] Binary File Placed to /system/bin/" >> $LOGFILE
 
-echo "Succesfully Installed Sudo."
-echo "Run /system/bin/sudo to execute sudo"
-echo "Or place the sudo file anywhere of your choice"
-echo "Or run the local sudo file with ./sudo"
-echo "Thanks for installing sudo!"
+echo "Setting permissions.."
+chmod 777 /system/bin/sudo 2>> $LOGFILE
+echo "[ ! ] Set permissions to 777 mode" >> $LOGFILE
+
+echo "\n\n\n[ * ] Installation Successful" >> $LOGFILE
+echo "Successfully Installed Sudo"
+echo "run: \"/system/bin/sudo\" to test"
+exit 0
