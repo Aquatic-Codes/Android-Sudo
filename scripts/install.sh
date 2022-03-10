@@ -166,5 +166,5 @@ fi
 
 echo "\n\n\n[ * ] Installation Successful" >> $LOGFILE
 echo "\n\n\nSuccessfully Installed Sudo"
-echo "run: \"/system/bin/sudo\" to test"
+echo "run: \"/system/bin/sudo\" to test\nRun \"sudo\" To test"
 exit 0
