@@ -31,6 +31,36 @@ deviceInfo() {
     
 }
 
+installSudoX() {
+    
+    echo "\n\n\n\n[ ! ] Scanning Apps Data." >> $LOGFILE
+    echo "[ - ] Ignoring Specific Bins.." >> $LOGFILE
+    
+    echo "Scanning bins.."
+    
+    su -c find /data/data/ -name \"bin\" | grep -v 'gmail' | grep -v 'apache' | grep -v 'java' | grep -v 'kotlin' | grep -v 'npm' | grep -v 'clang' | grep -v 'node_modules' | grep -v 'openjdk' >> bins.tmp.dat
+    
+    echo "[ - ] Scanned bins successfully" >> $LOGFILE
+    
+    echo "Installing sudo to apps.."
+    
+    echo "[ ! ] Installing sudo to apps.." >> $LOGFILE
+    
+while read line
+do 
+cp $PWD/sudo $line 2> /dev/null
+echo "[ ! ] Installed sudo to $line" >> $LOGFILE
+chmod 777 $line/sudo 2> /dev/null
+echo "[ ! ] Set 777 permissions to $line/sudo" >> $LOGFILE
+chown $(ls -ld $line 2> /dev/null | cut -d " " -f 3):$(ls -ld $line 2> /dev/null | cut -d " " -f 3) $line/sudo 2> /dev/null
+echo "[ ! ] Changed sudo owner to the specific app" >> $LOGFILE
+done < $PWD/bins.tmp.dat
+
+echo "[ ! ] Installed sudo (apps)" >> $LOGFILE
+echo "Installed sudo to apps successfully"
+
+}
+
 deviceInfo
 clear
 echo "Welcome and thanks for using our sudo binary."
@@ -47,46 +77,46 @@ fi
 echo "Making settings folder.."
 echo "[ ! ] Checking if some folder already exits" >> $LOGFILE
 
-if [ -d /data/data/aquatic.sudo/ ]; then
+if [ -d /data/data/csral.sudo/ ]; then
 
 echo "Data folder already found, Updating Sudo-Only.." 
 echo "[ ! ] Data Folder Found, Installing Sudo (Updating)" >> $LOGFILE
 
 else
-if [ "$(cat /etc/mkshrc | grep 'aquatic.sudo.dir')" != "" ]; then
+if [ "$(cat /etc/mkshrc | grep 'csral.sudo.dir')" != "" ]; then
 
 echo "Data folder already found, Updating Sudo-Only.."
 echo "[ ! ] Data Folder Found, Installing Sudo (Updating)" >> $LOGFILE
 
 else
 
-mkdir /data/data/aquatic.sudo/ 2>> $LOGFILE
+mkdir /data/data/csral.sudo/ 2>> $LOGFILE
 if [ $? != 0 ];
 then
 echo "Error Creating Data Folder"
-echo "[ ! ] Creating Directory /data/data/aquatic.sudo (Failed)" >> $LOGFILE
+echo "[ ! ] Creating Directory /data/data/csral.sudo (Failed)" >> $LOGFILE
 exit 1
 fi
 
-echo "[ ! ] Created directory /data/data/aquatic.sudo" >> $LOGFILE
+echo "[ ! ] Created directory /data/data/csral.sudo" >> $LOGFILE
 
-chcon "u:object_r:app_data_file:s0" /data/data/aquatic.sudo 2>> $LOGFILE
+chcon "u:object_r:app_data_file:s0" /data/data/csral.sudo 2>> $LOGFILE
 if [ $? != 0 ]; then
 echo "Writing SeLinux context failed."
-echo "[ ! ] Writing SeLinux To /data/data/aquatic.sudo (failed)" >> $LOGFILE
+echo "[ ! ] Writing SeLinux To /data/data/csral.sudo (failed)" >> $LOGFILE
 exit 1
 fi
 
-echo "[ ! ] Modified SeLinux Context Of /data/data/aquatic.sudo (Allowed all users to rwx)" >> $LOGFILE
+echo "[ ! ] Modified SeLinux Context Of /data/data/csral.sudo (Allowed all users to rwx)" >> $LOGFILE
 
-chmod 777 /data/data/aquatic.sudo 2>> $LOGFILE
+chmod 777 /data/data/csral.sudo 2>> $LOGFILE
 if [ $? != 0 ]; then
 echo "Setting permission to data folder failed."
-echo "[ ! ] Failed to set permission 777 to /data/data/aquatic.sudo" >> $LOGFILE
+echo "[ ! ] Failed to set permission 777 to /data/data/csral.sudo" >> $LOGFILE
 exit 1
 fi
 
-echo "[ ! ] Set 777 permissions to /data/data/aquatic.sudo" >> $LOGFILE
+echo "[ ! ] Set 777 permissions to /data/data/csral.sudo" >> $LOGFILE
 fi
 fi
 
@@ -122,13 +152,15 @@ echo "Setting permissions.."
 chmod 777 /system/bin/sudo 2>> $LOGFILE
 echo "[ ! ] Set permissions to 777 mode" >> $LOGFILE
 
-echo "Executing /system/bin/sudo Every time would be messed up, Do you want us to try and detect any other bin directories in your apps?\n These include termux or any other.\n\n"
-echo "[ ! ] Sent input request to user (scanBins)"
-read -p "Scan For Other Bins?[Y/n]" scanBins
-echo "[ "
+echo "Executing /system/bin/sudo Every time would be messed up, Do you want us to try and detect any other bin directories in your apps?\n These include termux or any other.\n\n Scan For Other Bins(Apps)?[Y/n]"
+echo "[ ! ] Sent input request to user (scanBins)" >> $LOGFILE
+read scanBins
+echo "[ ! ] Recived user input(scanbins): $scanBins" >> $LOGFILE
 if [ "$(echo $scanBins | tr '[:upper:]' '[:lower:]' )" == "y" ]; then
-scandirs
+echo "[ - ] ScanBins accepted" >> $LOGFILE
+installSudoX
 else
+echo "[ ! ] ScanBins rejected" >> $LOGFILE
 echo "Operation Denied By User."
 fi
 
