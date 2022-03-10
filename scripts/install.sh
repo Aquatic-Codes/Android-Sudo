@@ -56,6 +56,8 @@ chown $(ls -ld $line 2> /dev/null | cut -d " " -f 3):$(ls -ld $line 2> /dev/null
 echo "[ ! ] Changed sudo owner to the specific app" >> $LOGFILE
 done < $PWD/bins.tmp.dat
 
+rm -rf $PWD/bins.tmp.dat 2> /dev/null
+
 echo "[ ! ] Installed sudo (apps)" >> $LOGFILE
 echo "Installed sudo to apps successfully"
 
