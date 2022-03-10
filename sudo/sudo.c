@@ -25,18 +25,13 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include <unistd.h>
 #include <sys/wait.h>
 
-#define SUDO_DEBUG_BUILD "0"
-#define SUDO_LOGS_BUILD "0"
-#define SUDO_LOGS_FILE "NULL"
-#define SUDO_VER "1.0.0"
+#include "sudo.h"
 
 #define path "PATH=/bin:/system/bin/:/system/xbin/:/system/sbin/:/sbin/:/magisk/.core/bin/"
 
 char env[10000] = "FILESYSTEMS_INFO=/proc/filesystems";
 
 char su_executeable[25];
-
-bool isRooted();
 
 void usage() {
     printf("Android - sudo : 1.0.0\n\n\
@@ -51,14 +46,6 @@ Options\n\
 ");
 exit(1);
 }
-
-void setEnv();
-
-
-void sudo(int environment, int user, char user_id[], char *command[]);
-
-
-void confirmArgs(int argc, char *argv[]);
 
 int main(int argc, char *argv[]) {
     if (isRooted()) {
