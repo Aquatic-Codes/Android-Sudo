@@ -22,4 +22,4 @@ Gmail: chaturyasral@gmail.com
 
 # Documentation
 
-Read Docs folder [ Documentations are closed fof update ]
+Read Docs folder [ Documentations are closed for update ]
