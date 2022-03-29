@@ -1,7 +1,7 @@
 This project is licensed under the following license:
 ````
-Copyright (c) 1994-1996, 1998-2022
-    Todd C. Miller <Todd.Miller@sudo.ws>
+Copyright (c) 2022-2025
+    Chaturya Csral <chaturyasral@gmail.com>
 
 Permission to use, copy, modify, and distribute this software for any
 purpose with or without fee is hereby granted, provided that the above
