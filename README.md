@@ -1,7 +1,8 @@
 # Seroid
 
 Ever used linux on pc?  
-If yes, then you must know sudo!, This binary is similar to it. 
+If yes, then you must know sudo!  
+This binary is similar to it. 
 
 # Currently Working on?
 
