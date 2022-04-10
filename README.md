@@ -1,4 +1,4 @@
-# Sudo Binary For Android
+# Sudo Binary For Android - Seroid
 
 Ever used linux on pc?  
 If yes, then you must know sudo!, This binary is similar to it. 
