@@ -4,10 +4,9 @@
 #include <stdlib.h>
 #include <signal.h>
 
-#include "sudo.h"
+#include "sudo.hpp"
 
 struct device_info device;
-struct user_info user;
 struct parser command_info;
 
 #ifndef VERSION
@@ -18,13 +17,14 @@ using std::cout; using std::cin; using std::endl;
 
 int main(int argc, char *argv[]) {
     
-    user.pid = getpid();
-    user.ppid = getppid();
-    user.uid = getuid();
-    user.euid = geteuid();
-    user.egid = getegid();
-    user.gid = getgid();
-    user.username = getlogin();
+    logdata sudo_log;
+    
+    sudo_log.pid = getpid();
+    sudo_log.parent_pid = getppid();
+    sudo_log.uid = getuid();
+    sudo_log.euid = geteuid();
+    sudo_log.gid = getgid();
+    sudo_log.username = getlogin();
     
     for (int i = 0; i < 6; i++) {
         
@@ -39,6 +39,9 @@ int main(int argc, char *argv[]) {
     if (argc < 2) usage(1);
     
     if (device.rooted) {
+        
+        if (argc == 2)
+            if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0) usage(0);
         
         std::string command;
         
@@ -83,7 +86,7 @@ int main(int argc, char *argv[]) {
 
 void usage(int status) {
     
-    cout << "Android - Sudo : 2.0\
+    cout << "Seroid_Android - Sudo : 2.0\
     \nSudo - Run commands as another user.\
     \nusage: sudo [-u USER] -E [command]\
     \n\n  Options:\n\
@@ -117,7 +120,9 @@ void signal_handler(int SIGTYPE) {
         exit(0);
     } else if (SIGTYPE == SIGINT) {
         cout << "\n";
-        exit(1);
+        exit(130);
+    } else {
+        signal(SIGTYPE, SIG_DFL);
     }
     
 }
