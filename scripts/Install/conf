@@ -18,6 +18,3 @@ SUDO_BINARY=/data/adb/Seroid/sudo.aarch64
 ALLOW_PATCH_INIT_SCRIPTS=YES
 
 # Install Time Configs
-DATA_DIR=/data/sud/
-DATA_DIR=/data/sud
-DATA_DIR=/data/sudo/Seroid/
