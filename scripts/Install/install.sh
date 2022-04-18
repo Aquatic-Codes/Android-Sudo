@@ -20,7 +20,7 @@ fi
 if [ ! -f /system/bin/getprop ] || [ ! -f /system/bin/am ] || [ ! -f /system/bin/pm ] || [ ! -f /system/build.prop ] || [ "$(getprop >> /dev/null ; echo $?)" != 0 ] || [ -d /var ] || [ -d /usr ] || [ -d /boot ] || [ ! -d /system ]; then
 not_android
 fi
-
+h
 if [ "$(id -u)" != 0 ];
 then
 echo "Must run this script as root."
