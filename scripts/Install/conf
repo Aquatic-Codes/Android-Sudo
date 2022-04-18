@@ -1,0 +1,23 @@
+# Configuration File For Seroid
+# Location: /data/adb/Seroid/
+
+### Do Not Modify This File.
+
+VERSION=3.0
+CODE=12cf0jWs
+SECURE_FILES=/data/adb/Seroid/
+PERMISSIONS_DEFAULT=/data/adb/Seroid/permissions
+#PLUGINS_DIR=/data/adb/Seroid/Plugins
+#PLUGINS_MOUNT_POINT=;DATA_DIR;/plugins/
+PLUGINS_SUPPORTED=NO
+# Plugins is under development
+UPDATE_SCRIPT=/data/adb/Seroid/iu30cfws
+UPDATE_SUPPORTED=YES
+INSTALL_SCRIPT=/data/adb/Seroid/.install
+SUDO_BINARY=/data/adb/Seroid/sudo.aarch64
+ALLOW_PATCH_INIT_SCRIPTS=YES
+
+# Install Time Configs
+DATA_DIR=/data/sud/
+DATA_DIR=/data/sud
+DATA_DIR=/data/sudo/Seroid/
