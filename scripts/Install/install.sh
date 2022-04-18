@@ -97,12 +97,10 @@ echo "Directory already exists, Creating $dir/Seroid/"
 mkdir $dir/Seroid/
 echo "$dir/Seroid/" >> data.dir
 echo "Created Directory" >> $LOGFILE
-echo "$dir/Seroid" >> /data/adb/Seroid/Seroid.dat
 else
 mkdir $dir
 echo "$dir" >> data.dir
 echo "Created Directory" >> $LOGFILE
-echo "$dir" >> /data/adb/Seroid/Seroid.dat
 fi
 
 DATA_DIR=$(cat data.dir)
