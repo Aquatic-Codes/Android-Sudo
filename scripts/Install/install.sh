@@ -88,6 +88,10 @@ if [ -d /data/adb/Seroid ]; then
 fi
 
 mkdir /data/adb/Seroid/
+chmod 774 /data/adb/Seroid/
+mkdir /data/adb/Seroid/tmp/
+chmod 770 /data/adb/Seroid/tmp/
+chown root:root /data/adb/Seroid/tmp/
 
 echo "Enter the directory to use for storing Information(/data/):"
 read dir
@@ -126,8 +130,21 @@ echo "Installation Failed For $(line)" >> $LOGFILE
 fi
 chown $(ls -ld $line 2> /dev/null | cut -d " " -f 3):$(ls -ld $line 2> /dev/null | cut -d " " -f 3) $line/sudo
 mkdir $DATA_DIR/Access/$(ls -ld $line 2> /dev/null | cut -d " " -f 3)/
-touch $DATA_DIR/Access/$(ls -ld $line 2> /dev/null | cut -d " " -f 3)/limits.conf
-echo "global" >> $DATA_DIR/Access/$(ls -ld $line 2> /dev/null | cut -d " " -f 3)/passwd.str
+
+### Application defaults
+
+if [ ! -f $DATA_DIR/Access/$(ls -ld $line 2> /dev/null | cut -d " " -f 3)/passwd.str ]; then
+    echo "global" >> $DATA_DIR/Access/$(ls -ld $line 2> /dev/null | cut -d " " -f 3)/passwd.str 2>> $LOGFILE
+fi
+
+if [ ! -f $DATA_DIR/Access/$(ls -ld $line 2> /dev/null | cut -d " " -f 3)/limits.conf ]; then
+    echo "defaults" >> $DATA_DIR/Access/$(ls -ld $line 2> /dev/null | cut -d " " -f 3)/limits.conf 2>> $LOGFILE
+fi
+
+if [ ! -f $DATA_DIR/Apps/$(ls -ld $line 2> /dev/null | cut -d " " -f 3).sudo ]; then
+    echo "request" >> $DATA_DIR/Apps/$(ls -ld $line 2> /dev/null | cut -d " " -f 3).sudo
+fi
+
 done < tmp.bins
 
 rm -rf tmp.bins 2> /dev/null
