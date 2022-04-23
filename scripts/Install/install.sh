@@ -160,6 +160,9 @@ chown root:root /data/adb/Seroid/sudo.aarch64
 mv $PWD/install.sh /data/adb/Seroid/.install
 chmod 000 /data/adb/Seroid/.install
 chown root:root /data/adb/Seroid/.install
+mv $PWD/update.sh /data/adb/Seroid/update.sh
+chmod 775 /data/adb/Seroid/update.sh
+chown root:root /data/adb/Seroid/update.sh
 chmod 664 $LOGFILE
 
 exit 0
