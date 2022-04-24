@@ -20,4 +20,4 @@ Third-Party Libraries: Null
 Compiler: Clang, Clang++ [clang,clang++,c++,gcc,g++]  
 **Must use a Linux kernel and Android, GNU/Linux can be used to compile.**
 # Developer Contact
-chaturyasral@gmail.com  
+chaturyasral@gmail.com
