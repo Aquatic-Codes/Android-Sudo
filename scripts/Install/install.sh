@@ -29,6 +29,8 @@ echo "Not running as root."
 exit 1
 fi
 
+clear
+
 LOGFILE=$PWD/install.log
 
 rm -rf $LOGFILE 2> /dev/null
@@ -96,6 +98,10 @@ chown root:root /data/adb/Seroid/tmp/
 echo "Enter the directory to use for storing Information(/data/):"
 read dir
 
+if [ "$(echo $dir | cut -d / -f 2)" != "data" ]; then
+    dir="/data/$dir"
+fi
+
 if [ -d $dir ]; then
 echo "Directory already exists, Creating $dir/Seroid/"
 mkdir $dir/Seroid/
@@ -110,7 +116,7 @@ fi
 DATA_DIR=$(cat data.dir)
 rm -rf data.dir
 echo "Using $DATA_DIR"
-echo "DATA_DIR=$DATA_DIR" >> $PWD/conf
+echo "\nDATA_DIR=$DATA_DIR" >> $PWD/conf
 mv ./conf /data/adb/Seroid/Seroid.conf 2> /dev/null
 chmod 664 /data/adb/Seroid/Seroid.conf
 chown root:root /data/adb/Seroid/Seroid.conf
