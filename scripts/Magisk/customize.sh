@@ -22,7 +22,7 @@
 #
 
 SKIPUNZIP=1
-# Do not install frok recovery
+# Do not install from recovery
 confirm_not_recovery() {
     if $BOOTMODE; then
         ui_print "* Seroid Installer *"
