@@ -44,6 +44,9 @@ check_install() {
     fi
 }
 
+confirm_not_recovery
+check_install
+
 ui_print "Installating Seroid To /system/bin"
 
 ui_print "Placing Files.."
@@ -72,13 +75,13 @@ unzip -o "$ZIPFILE" 'module.prop' -d "$MODPATH" &> /dev/null
 unzip -o "$ZIPFILE" 'guide.md' -d "$MODPATH" &> /dev/null
 ui_print "Inflated Guide"
 unzip -o "$ZIPFILE" 'LICENSE' -d "$MODPATH" &> /dev/null
-unzip -o "$ZIPFILE" 'post-fs-data.sh' "$MODPATH" &> /dev/null
+unzip -o "$ZIPFILE" 'post-fs-data.sh' -d "$MODPATH" &> /dev/null
 if [ "$?" != 0 ]; then
     abort "Error inflating post fs data script"
 else
     ui_print "Inflated post-fs-data.sh"
 fi
-unzip -o "$ZIPFILE" 'service.sh' "$MODPATH" &> /dev/null
+unzip -o "$ZIPFILE" 'service.sh' -d "$MODPATH" &> /dev/null
 if [ "$?" != 0 ]; then
     abort "Error inflating late start service script"
 else
