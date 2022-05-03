@@ -31,21 +31,10 @@ confirm_not_recovery() {
         abort "Use the Update Script Instead."
     fi
 }
-# Check installs.
-check_install() {
-    ls /data/adb/Seroid/ &> /dev/null
-    if [ "$?" != 0 ]; then
-        . /data/adb/Seroid/Seroid.conf
-        if [ "$?" != 0 ]; then
-            ui_print "Seroid is not installed."
-            ui_print "This module needs Seroid"
-            abort "Use the install script first"
-        fi
-    fi
-}
+
 
 confirm_not_recovery
-check_install
+
 
 ui_print "Installating Seroid To /system/bin"
 
