@@ -49,10 +49,11 @@ if [ "$?" != 0 ]; then
     # If attempt fails, install the availabe
     # Sudo binary in zip, mostly latest version
     unzip -o "$ZIPFILE" 'binary' -d "$MODPATH/system/bin/sudo" &> /dev/null
-    ui_print "Inflated Sudo Binary"
     if [ "$?" != 0 ]; then
         # All attempts failed.
         abort "Unable to place files"
+    else
+        ui_print "Inflated Sudo Binary"
     fi
 else
     ui_print "Copied local(installed) sudo version"
