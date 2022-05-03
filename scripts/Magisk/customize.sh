@@ -71,6 +71,6 @@ fi
 unzip -o "$ZIPFILE" 'module.prop' -d "$MODPATH" &> /dev/null
 #unzip -o "$ZIPFILE" 'guide.md' -d "$MODPATH" &> /dev/null
 #ui_print "Inflated Guide"
-#extract -o "$ZIPFILE" 'LICENSE' -d "$MODPATH" &> /dev/null
+#unzip -o "$ZIPFILE" 'LICENSE' -d "$MODPATH" &> /dev/null
 
 ui_print "*Installation Successfull*"
