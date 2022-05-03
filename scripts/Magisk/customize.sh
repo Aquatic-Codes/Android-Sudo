@@ -32,9 +32,7 @@ confirm_not_recovery() {
     fi
 }
 
-
 confirm_not_recovery
-
 
 ui_print "Installating Seroid To /system/bin"
 
