@@ -59,6 +59,10 @@ else
     ui_print "Copied local(installed) sudo version"
 fi
 
+ui_print "Setting permissions"
+setperm "$MODPATH/system/bin/sudo" "root" "root" 775 "u:object_r:system_file:s0"
+ui_print "Permissions Has Been Set"
+
 unzip -o "$ZIPFILE" 'module.prop' -d "$MODPATH" &> /dev/null
 unzip -o "$ZIPFILE" 'guide.md' -d "$MODPATH" &> /dev/null
 ui_print "Inflated Guide"
