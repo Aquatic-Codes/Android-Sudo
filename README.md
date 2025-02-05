@@ -20,4 +20,4 @@ Discord: csral
 
 # Documentation
 
-Read Docs folder [ Documentations are closed for update ]
+Read Docs folder [ Documentations are closed ]
